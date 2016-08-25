@@ -1,0 +1,55 @@
+set(GTEST_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/gtest")
+
+ExternalProject_Add(
+    GtestExternal
+
+    GIT_REPOSITORY "https://github.com/google/googletest"
+
+    PREFIX "${GTEST_PREFIX}"
+    UPDATE_COMMAND ""
+    PATCH_COMMAND ""
+    INSTALL_COMMAND ""
+    CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+    SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${THIRD_PARTY_LIBS_FOLDER_PREFIX}/gtest"
+)
+
+set(LIBPREFIX "${CMAKE_STATIC_LIBRARY_PREFIX}")
+set(LIBSUFFIX "${CMAKE_STATIC_LIBRARY_SUFFIX}")
+
+ExternalProject_Get_Property(GtestExternal source_dir binary_dir)
+
+add_library(gtest IMPORTED STATIC GLOBAL)
+add_dependencies(gtest GTestExternal)
+
+set(GTEST_LOCATION "${binary_dir}/googlemock")
+set(GTEST_INCLUDES "${source_dir}/googletest/include")
+set(GTEST_GMOCK_INCLUDES "${source_dir}/googlemock/include")
+set(GTEST_LIBRARY  "${GTEST_LOCATION}/gtest/${LIBPREFIX}gtest${LIBSUFFIX}")
+set(GTEST_MAIN  "${GTEST_LOCATION}/gtest/${LIBPREFIX}gtest_main${LIBSUFFIX}")
+set(GTEST_GMOCK  "${GTEST_LOCATION}/${LIBPREFIX}gmock${LIBSUFFIX}")
+
+# workaround
+file(MAKE_DIRECTORY ${GTEST_INCLUDES})
+file(MAKE_DIRECTORY ${GTEST_GMOCK_INCLUDES})
+
+set_target_properties(gtest PROPERTIES
+    IMPORTED_LOCATION "${GTEST_LIBRARY}"
+    INTERFACE_INCLUDE_DIRECTORIES "${GTEST_INCLUDES}"
+    IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
+
+add_library(gtest_main IMPORTED STATIC GLOBAL)
+add_dependencies(gtest_main GTestExternal)
+
+set_target_properties(gtest_main PROPERTIES
+    IMPORTED_LOCATION "${GTEST_MAIN}"
+    INTERFACE_INCLUDE_DIRECTORIES "${GTEST_INCLUDES}"
+    IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
+
+add_library(gmock IMPORTED STATIC GLOBAL)
+add_dependencies(gmock GTestExternal)
+
+set_target_properties(gmock PROPERTIES
+    IMPORTED_LOCATION "${GTEST_GMOCK}"
+    INTERFACE_INCLUDE_DIRECTORIES "${GTEST_GMOCK_INCLUDES}"
+    IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
+
