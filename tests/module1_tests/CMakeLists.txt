@@ -8,4 +8,6 @@ set(SOURCE_FILES test1.cpp)
 
 add_executable(${MODULE_TEST} ${SOURCE_FILES})
 
+add_dependencies(${MODULE_TEST} gtest gtest_main gmock)
+
 target_link_libraries(${MODULE_TEST} module1 gtest gtest_main gmock)
