@@ -18,9 +18,11 @@ set (LIBRARY_INSTALL_PATH_SUFFIX lib)
 
 set (CMAKE_VERBOSE_MAKEFILE OFF)
 
-find_package(ECM REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH ${ECM_MODULE_DIR})
-include(ECMEnableSanitizers)
+if (!WIN32)
+    find_package(ECM REQUIRED NO_MODULE)
+    set(CMAKE_MODULE_PATH ${ECM_MODULE_DIR})
+    include(ECMEnableSanitizers)
+endif()
 
 include(compiler_options.cmake)
 
