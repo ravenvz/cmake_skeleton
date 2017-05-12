@@ -42,5 +42,5 @@ endif()
 
 target_link_libraries(${PROJECT} module1)
 
-add_subdirectory(src/module1)
+add_subdirectory(module1)
 add_subdirectory(tests)
