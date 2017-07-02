@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.8)
 
 set(PROJECT project_name)
 
@@ -30,7 +30,7 @@ set(SOURCE_FILES src/main.cpp)
 
 add_executable(${PROJECT} ${SOURCE_FILES})
 
-target_compile_features(${PROJECT} PUBLIC cxx_return_type_deduction)
+target_compile_features(${PROJECT} PUBLIC cxx_std_17)
 
 if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
     target_compile_options(${PROJECT} PUBLIC ${CLANG_COMPILE_OPTIONS})
