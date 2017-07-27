@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.8)
 
 set(PROJECT project_name)
 
@@ -24,23 +24,4 @@ if (!WIN32)
     include(ECMEnableSanitizers)
 endif()
 
-include(compiler_options.cmake)
-
-set(SOURCE_FILES src/main.cpp)
-
-add_executable(${PROJECT} ${SOURCE_FILES})
-
-target_compile_features(${PROJECT} PUBLIC cxx_return_type_deduction)
-
-if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-    target_compile_options(${PROJECT} PUBLIC ${CLANG_COMPILE_OPTIONS})
-elseif(CMAKE_COMPILER_IS_GNUCXX)
-    target_compile_options(${PROJECT} PUBLIC ${GCC_COMPILE_OPTIONS})
-else()
-  message(FATAL_ERROR "Unknown compiler.")
-endif()
-
-target_link_libraries(${PROJECT} module1)
-
-add_subdirectory(module1)
-add_subdirectory(tests)
+add_subdirectory(project_name)
