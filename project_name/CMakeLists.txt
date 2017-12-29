@@ -20,6 +20,6 @@ endif()
 
 add_subdirectory(module1)
 
-if (CMAKE_BUILD_TESTS)
+if (BUILD_TESTS)
     add_subdirectory(tests)
 endif()
