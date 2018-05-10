@@ -1,60 +1,14 @@
-set(GTEST_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/gtest")
+include(ExternalProject)
 
-ExternalProject_Add(
-    GtestExternal
+project(googletest-download NONE)
 
-    GIT_REPOSITORY "https://github.com/google/googletest"
-
-    PREFIX "${GTEST_PREFIX}"
+ExternalProject_Add(googletest
+    GIT_REPOSITORY "https://github.com/google/googletest.git"
+	GIT_TAG "master"
     UPDATE_COMMAND ""
     PATCH_COMMAND ""
     INSTALL_COMMAND ""
-    CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-    SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${THIRD_PARTY_LIBS_FOLDER_PREFIX}/gtest"
+    CMAKE_ARGS ""
+    SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/googletest-src"
+	BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/googletest-build"
 )
-
-set(LIBPREFIX "${CMAKE_STATIC_LIBRARY_PREFIX}")
-set(LIBSUFFIX "${CMAKE_STATIC_LIBRARY_SUFFIX}")
-
-ExternalProject_Get_Property(GtestExternal source_dir binary_dir)
-
-set(GTEST_LOCATION "${binary_dir}/googlemock")
-set(GTEST_INCLUDES "${source_dir}/googletest/include")
-set(GTEST_GMOCK_INCLUDES "${source_dir}/googlemock/include")
-set(GTEST_LIBRARY  "${GTEST_LOCATION}/gtest/${LIBPREFIX}gtest${LIBSUFFIX}")
-set(GTEST_MAIN  "${GTEST_LOCATION}/gtest/${LIBPREFIX}gtest_main${LIBSUFFIX}")
-set(GTEST_GMOCK  "${GTEST_LOCATION}/${LIBPREFIX}gmock${LIBSUFFIX}")
-
-# Workaround against CMake trying to use lib before
-# downloading it resulting in complains about
-# INTERFACE_INCLUDE_DIRECTORIES pointing to non-existing
-# directory.
-# More info https://cmake.org/Bug/view.php?id=15052
-file(MAKE_DIRECTORY ${GTEST_INCLUDES})
-file(MAKE_DIRECTORY ${GTEST_GMOCK_INCLUDES})
-
-add_library(gtest IMPORTED STATIC GLOBAL)
-add_dependencies(gtest GtestExternal)
-
-set_target_properties(gtest PROPERTIES
-    IMPORTED_LOCATION "${GTEST_LIBRARY}"
-    INTERFACE_INCLUDE_DIRECTORIES "${GTEST_INCLUDES}"
-    IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
-
-add_library(gtest_main IMPORTED STATIC GLOBAL)
-add_dependencies(gtest_main GtestExternal)
-
-set_target_properties(gtest_main PROPERTIES
-    IMPORTED_LOCATION "${GTEST_MAIN}"
-    INTERFACE_INCLUDE_DIRECTORIES "${GTEST_INCLUDES}"
-    IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
-
-add_library(gmock IMPORTED STATIC GLOBAL)
-add_dependencies(gmock GtestExternal)
-
-set_target_properties(gmock PROPERTIES
-    IMPORTED_LOCATION "${GTEST_GMOCK}"
-    INTERFACE_INCLUDE_DIRECTORIES "${GTEST_GMOCK_INCLUDES}"
-    IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
-
-
