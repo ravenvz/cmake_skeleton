@@ -2,11 +2,12 @@ set(PROJECT project_binary_name)
 
 project(${PROJECT})
 
-set(SOURCE_FILES main/main.cpp)
-
-add_executable(${PROJECT} ${SOURCE_FILES})
-
 include(compiler_options.cmake)
+
+add_executable(${PROJECT})
+target_sources(${PROJECT}
+    PRIVATE
+    "${cmake_current_source_dir}/main/main.cpp")
 
 target_compile_features(${PROJECT} PUBLIC cxx_std_17)
 
@@ -23,5 +24,8 @@ endif()
 add_subdirectory(module1)
 
 if (BUILD_TESTS)
-    add_subdirectory(tests)
+    set(TEST_RUN_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+    enable_testing()
+	include(GoogleTest)
+	add_subdirectory(tests)
 endif()
