@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.13)
 
 set(PROJECT project_name)
 
@@ -35,3 +35,9 @@ if (!WIN32)
 endif()
 
 add_subdirectory(project_name)
+
+if (BUILD_TESTS)
+    # For some, yet unknown to me reason enable_testing() should be
+    # called in this top-level cmake, otherwise ctest cannot find tests
+    enable_testing()
+endif()

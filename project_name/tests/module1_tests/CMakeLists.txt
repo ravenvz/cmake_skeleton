@@ -1,19 +1,25 @@
-cmake_minimum_required(VERSION 3.6)
-
 set(MODULE_TEST module1_test)
 
 project(${MODULE_TEST})
 
-set(SOURCE_FILES test1.cpp)
+add_executable(${MODULE_TEST})
+target_sources(${MODULE_TEST}
+PRIVATE
+    "${CMAKE_CURRENT_LIST_DIR}/test1.cpp"
+)
 
-add_executable(${MODULE_TEST} ${SOURCE_FILES})
+# This a workaround to prevent linking errors on Windows.
+if (WIN32)
+    target_compile_definitions( ${MODULE_TEST} PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY )
+endif()
 
-# This a workaround to prevent linking errors on Windows. Not sure if it will be required on linux machine.
-target_compile_definitions( ${MODULE_TEST} PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY )
+target_compile_features(${MODULE_TEST} PRIVATE cxx_std_17)
+target_compile_options(${MODULE_TEST} PUBLIC "$<$<CONFIG:DEBUG>:${DEBUG_COMPILE_OPTIONS}>")
+target_compile_options(${MODULE_TEST} PUBLIC "$<$<CONFIG:RELEASE>:${RELEASE_COMPILE_OPTIONS}>")
 
-# Choose any of those three
-gtest_add_tests(TARGET ${MODULE_TEST} TEST_PREFIX old:)
-# gtest_discover_tests(${MODULE_TEST} TEST_PREFIX new:)
-# add_test(${MODULE_TEST} ${MODULE_TEST})
+target_link_libraries(${MODULE_TEST}
+    PRIVATE module1
+    PRIVATE gmock_main)
 
-target_link_libraries(${MODULE_TEST} module1 gmock_main)
+gtest_discover_tests(${MODULE_TEST})
+

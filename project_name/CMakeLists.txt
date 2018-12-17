@@ -7,7 +7,7 @@ include(compiler_options.cmake)
 add_executable(${PROJECT})
 target_sources(${PROJECT}
     PRIVATE
-    "${cmake_current_source_dir}/main/main.cpp")
+    "${CMAKE_CURRENT_SOURCE_DIR}/main/main.cpp")
 
 target_compile_features(${PROJECT} PUBLIC cxx_std_17)
 
@@ -24,8 +24,7 @@ endif()
 add_subdirectory(module1)
 
 if (BUILD_TESTS)
-    set(TEST_RUN_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
     enable_testing()
-	include(GoogleTest)
+    include(GoogleTest REQUIRED)
 	add_subdirectory(tests)
 endif()
