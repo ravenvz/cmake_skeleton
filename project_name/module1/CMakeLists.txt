@@ -8,4 +8,11 @@ PRIVATE
     "${CMAKE_CURRENT_LIST_DIR}/src/Dummy.cpp"
 )
 
+target_link_libraries(
+    ${MODULE}
+    PRIVATE
+        project_options
+        project_warnings
+)
+
 target_include_directories(${MODULE} PUBLIC include)

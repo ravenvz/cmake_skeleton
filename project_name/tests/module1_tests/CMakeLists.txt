@@ -11,9 +11,14 @@ if (WIN32)
     target_compile_definitions( ${MODULE_TEST} PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY )
 endif()
 
-target_link_libraries(${MODULE_TEST}
-    PRIVATE module1
-    PRIVATE gmock_main)
+target_link_libraries(
+    ${MODULE_TEST}
+    PRIVATE
+        project_options
+        project_warnings
+        module1
+        gmock_main
+)
 
 gtest_discover_tests(${MODULE_TEST})
 
