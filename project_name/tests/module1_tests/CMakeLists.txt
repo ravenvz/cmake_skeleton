@@ -13,10 +13,6 @@ if (WIN32)
     target_compile_definitions( ${MODULE_TEST} PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY )
 endif()
 
-target_compile_features(${MODULE_TEST} PRIVATE cxx_std_17)
-target_compile_options(${MODULE_TEST} PUBLIC "$<$<CONFIG:DEBUG>:${DEBUG_COMPILE_OPTIONS}>")
-target_compile_options(${MODULE_TEST} PUBLIC "$<$<CONFIG:RELEASE>:${RELEASE_COMPILE_OPTIONS}>")
-
 target_link_libraries(${MODULE_TEST}
     PRIVATE module1
     PRIVATE gmock_main)
