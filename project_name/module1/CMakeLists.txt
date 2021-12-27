@@ -1,7 +1,5 @@
 set(MODULE module1)
 
-project(${MODULE})
-
 add_library(${MODULE} SHARED ${SOURCE_FILES} ${HEADER_FILES})
 target_sources(${MODULE}
 PUBLIC
@@ -11,4 +9,3 @@ PRIVATE
 )
 
 target_include_directories(${MODULE} PUBLIC include)
-target_compile_features(${MODULE} PUBLIC cxx_std_17)

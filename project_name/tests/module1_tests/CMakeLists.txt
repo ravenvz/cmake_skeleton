@@ -1,7 +1,5 @@
 set(MODULE_TEST module1_test)
 
-project(${MODULE_TEST})
-
 add_executable(${MODULE_TEST})
 target_sources(${MODULE_TEST}
 PRIVATE
