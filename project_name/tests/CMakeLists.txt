@@ -1,6 +1,3 @@
-set(PROJECT_TESTS project_name_tests)
-project(${PROJECT_TESTS})
-
 find_package(Threads REQUIRED)
 
 # Download and unpack googletest at configure time

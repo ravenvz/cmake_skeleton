@@ -35,6 +35,8 @@ set_project_warnings(project_warnings)
 include(cmake/Sanitizers.cmake)
 enable_sanitizers(project_options)
 
+enable_testing()
+
 # enable doxygen
 # include(cmake/Doxygen.cmake)
 # enable_doxygen()
