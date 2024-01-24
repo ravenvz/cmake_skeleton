@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.28)
 
 set(PROJECT project_name)
 
@@ -46,13 +46,4 @@ option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
 option(ENABLE_TESTING "Enable Test Builds" OFF)
 option(ENABLE_FUZZING "Enable Fuzzing Builds" OFF)
 
-add_subdirectory(${PROJECT}/module1)
-
-enable_testing()
-
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
-    set(TEST_RUN_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-	include(GoogleTest)
-    add_subdirectory(${PROJECT}/tests)
-endif()
-
+add_subdirectory(${PROJECT})
